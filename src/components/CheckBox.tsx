@@ -1,18 +1,20 @@
 import React from "react";
+import { PrefInfo } from "../constants";
 
 interface props {
-  prefecture: string
-  getPref: (prefecture: string) => void
+  prefecture: PrefInfo
+  getPref: (prefCode: number) => void
 }
 
 const CheckBox = ({ prefecture, getPref }: props) => {
+  const { prefCode, prefName } = prefecture
 
   return(
     <div className='checkbox'>
-      <input type="checkbox" id={prefecture} name={prefecture}
-        onClick={() => getPref(prefecture)}
+      <input type="checkbox" id={prefName} name={prefName}
+        onClick={() => getPref(prefCode)}
       />
-      <label htmlFor={prefecture}>{prefecture}</label>
+      <label htmlFor={prefName}>{prefName}</label>
     </div>
   )
 }
