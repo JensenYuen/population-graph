@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../stylesheets/homepage.css';
 import CheckBox from '../components/CheckBox';
+import Graph from '../components/Graph';
 
 const HomePage = () => {
   const [prefectures, setprefectures] = useState<string[]>([])
@@ -37,14 +38,14 @@ const HomePage = () => {
       <h1 style={{ background:"#7a7a7a", textAlign:"center", margin: 0, marginBottom: "1rem" }}>Hello World!</h1>
       <div className='container'>
         <div className='content'>
-          <fieldset>
+          <fieldset className='fieldset'>
             <legend>都道府県</legend>
             <div className='checkbox-grid'>
               {renderCheckboxes()}
             </div>
           </fieldset>
           <div className='graph'>
-
+            <Graph />
           </div>
         </div>
       </div>
