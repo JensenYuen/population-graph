@@ -56,12 +56,6 @@ const HomePage = () => {
     const data = await getAllPrefectures();
     setprefectures(data.data!)
 
-    // if (data.err) {
-    //   // add error handling later
-    // } else {
-    //   setprefectures(data.data!)
-    // }
-
     setIsLoading(false);
   },[])
 
@@ -96,7 +90,7 @@ const HomePage = () => {
         <div className='spinner' />
       </div>
       <h1 style={{ background:"#7a7a7a", textAlign:"center", margin: 0, marginBottom: "1rem" }}>日本府県人口</h1>
-      <div className={'container'}>
+      <div className='container'>
         <div className='content'>
           <fieldset className='fieldset'>
             <legend>都道府県</legend>
