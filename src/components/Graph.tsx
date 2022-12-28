@@ -9,10 +9,19 @@ interface props {
 }
 
 const Graph = ({ prefInfos }: props) => {
-  const series = [{
-      name: 'A',
-      data: [0,0,0,0,0,0,0,0,0,0,0]
-    }]
+  let pointStart: number = 0
+  let pointEnd: number = 0
+  let xAxisRange: number[] = []
+
+  const series = prefInfos.map((prefInfo) => {
+    pointStart = prefInfo.years[0];
+    pointEnd = prefInfo.years[-1];
+    xAxisRange = prefInfo.years;
+    return ({
+      name: prefInfo.prefName,
+      data: prefInfo.values
+    })
+  })
 
   const options = {
     chart: {
@@ -30,9 +39,10 @@ const Graph = ({ prefInfos }: props) => {
       title: {
         text: '年度'
       },
+      categories: xAxisRange,
       accessibility: {
-        rangeDescription: 'Range: 2010 to 2020'
-      }
+        rangeDescription: `Range: ${pointStart} to ${pointEnd}`
+      },
     },
     legend: {
       layout: 'vertical',
@@ -43,8 +53,7 @@ const Graph = ({ prefInfos }: props) => {
       series: {
         label: {
           connectorAllowed: false
-        },
-        pointStart: 2010
+        }
       }
     },
     series,

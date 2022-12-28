@@ -7,6 +7,7 @@ import { PrefInfo } from '../constants/apiModal'
 
 export interface graphData {
   prefCode: number;
+  prefName: string;
   values: number[];
   years: number[];
 }
@@ -35,7 +36,13 @@ const HomePage = () => {
       })
 
       Promise.all(prefInforRes).then((prefInforRes) => {
-        const prefInfos = prefInforRes;
+        const prefInfos = prefInforRes.map((prefInfo) => {
+          const prefName = prefectures.find((pref) => (pref.prefCode === prefInfo.prefCode))?.prefName!
+          return({
+            ...prefInfo,
+            prefName
+          })
+        });
 
         setPrefInfos(prefInfos)
       })
@@ -63,40 +70,14 @@ const HomePage = () => {
 
     if (isPresent) {
       const tempCode = prefCodes.filter(code => code !== prefCode);
-      // const tempInfo = prefInfos.filter(code => code.prefCode !== prefCode);
 
       setPrefCodes(tempCode);
-      // setPrefInfos(tempInfo);
     } else {
       setPrefCodes([...prefCodes, prefCode]);
     }
   }
 
-  const getPrefInfo = () => {
-    setIsLoading(true);
-
-    prefCodes.forEach(async (prefCode) =>{
-      const isPresent = prefInfos.find((prefInfo) => (prefInfo.prefCode === prefCode))
-
-      if (!isPresent) {
-        const data = await getPrefPopulation(prefCode);
-        setPrefInfos([...prefInfos, data]);
-      }
-    })
-
-    setIsLoading(false);
-  }
-
   const renderCheckboxes = () => {
-    const prefectures = [
-      {prefCode: 1, prefName: '北海道'},
-      {prefCode: 2, prefName: '青森県'},
-      {prefCode: 3, prefName: '岩手県'},
-      {prefCode: 4, prefName: '宮城県'},
-      {prefCode: 5, prefName: '秋田県'},
-      {prefCode: 6, prefName: '山形県'},
-      {prefCode: 7, prefName: '福島県'}
-    ]
     const checkboxes = prefectures.map((prefecture) => {
       return (
         <CheckBox
@@ -114,7 +95,7 @@ const HomePage = () => {
       <div className={`overlay ${isLoading ? "": "hidden"}`}>
         <div className='spinner' />
       </div>
-      <h1 style={{ background:"#7a7a7a", textAlign:"center", margin: 0, marginBottom: "1rem" }}>Hello World!</h1>
+      <h1 style={{ background:"#7a7a7a", textAlign:"center", margin: 0, marginBottom: "1rem" }}>日本府県人口</h1>
       <div className={'container'}>
         <div className='content'>
           <fieldset className='fieldset'>
@@ -122,7 +103,6 @@ const HomePage = () => {
             <div className='checkbox-grid'>
               {prefectures && renderCheckboxes()}
             </div>
-            <button onClick={() => getPrefInfo()}>API TEST</button>
           </fieldset>
           <div className='graph'>
             <Graph
