@@ -1,9 +1,7 @@
 .container {
-  display: grid;
-  grid-auto-columns: auto;
   align-items: center;
   font-size: 1rem;
-  margin: 25px;
+  padding: 25px;
   width: auto;
   height: 100%;
 };
@@ -33,6 +31,7 @@
 .graph {
   width: auto;
   min-width: 200px;
+  border: 1px rgb(128, 128, 128) solid;
 }
 
 .overlay {
