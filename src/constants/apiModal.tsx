@@ -19,5 +19,15 @@ export interface PrefPopuRes {
 
 export interface PopuInfo {
   boundaryYear: number,
-  data: unknown,
+  data: CatInfo[],
+}
+
+export interface CatInfo{
+  label: string,
+  data: PopuData[]
+}
+
+export interface PopuData {
+  year: number,
+  value: number
 }

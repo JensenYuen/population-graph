@@ -5,38 +5,86 @@ import Graph from '../components/Graph';
 import { getAllPrefectures, getPrefPopulation } from '../controllers/apiController';
 import { PrefInfo } from '../constants/apiModal'
 
+export interface graphData {
+  prefCode: number;
+  values: number[];
+  years: number[];
+}
+
 const HomePage = () => {
   const [prefectures, setprefectures] = useState<PrefInfo[]>([]);
   const [prefCodes, setPrefCodes] = useState<number[]>([]);
+  const [prefInfos, setPrefInfos] = useState<graphData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  useMemo(() => {
+    setIsLoading(true);
+
+    if (prefCodes.length === 0) {
+      setPrefInfos([]);
+    } else {
+      const prefInforRes = prefCodes.map((prefCode) => {
+        const prefInfo = prefInfos.find((prefInfo) => (prefInfo.prefCode === prefCode));
+
+        if (!prefInfo) {
+          const data = getPrefPopulation(prefCode);
+          return data;
+        }
+
+        return prefInfo;
+      })
+
+      Promise.all(prefInforRes).then((prefInforRes) => {
+        const prefInfos = prefInforRes;
+
+        setPrefInfos(prefInfos)
+      })
+    }
+
+    setIsLoading(false);
+  },[prefCodes])
 
   useMemo(async () => {
     setIsLoading(true);
     const data = await getAllPrefectures();
+    setprefectures(data.data!)
 
-    if (data.err) {
-      // add error handling later
-    } else {
-      setprefectures(data.data!)
-    }
+    // if (data.err) {
+    //   // add error handling later
+    // } else {
+    //   setprefectures(data.data!)
+    // }
 
     setIsLoading(false);
   },[])
 
   const getPref = (prefCode: number) => {
-    const isPresent = prefCodes.find(code => code === prefCode)
+    const isPresent = prefCodes.find(code => code === prefCode);
+
     if (isPresent) {
-      const temp = prefCodes.filter(code => code !== prefCode)
-      setPrefCodes(temp)
+      const tempCode = prefCodes.filter(code => code !== prefCode);
+      // const tempInfo = prefInfos.filter(code => code.prefCode !== prefCode);
+
+      setPrefCodes(tempCode);
+      // setPrefInfos(tempInfo);
     } else {
-      setPrefCodes([...prefCodes, prefCode])
+      setPrefCodes([...prefCodes, prefCode]);
     }
   }
 
-  console.log(prefCodes);
+  const getPrefInfo = () => {
+    setIsLoading(true);
 
-  const callapi = () => {
-    getPrefPopulation(prefCodes);
+    prefCodes.forEach(async (prefCode) =>{
+      const isPresent = prefInfos.find((prefInfo) => (prefInfo.prefCode === prefCode))
+
+      if (!isPresent) {
+        const data = await getPrefPopulation(prefCode);
+        setPrefInfos([...prefInfos, data]);
+      }
+    })
+
+    setIsLoading(false);
   }
 
   const renderCheckboxes = () => {
@@ -74,10 +122,11 @@ const HomePage = () => {
             <div className='checkbox-grid'>
               {prefectures && renderCheckboxes()}
             </div>
-            <button onClick={() => callapi()}>API TEST</button>
+            <button onClick={() => getPrefInfo()}>API TEST</button>
           </fieldset>
           <div className='graph'>
-            <Graph />
+            <Graph
+              prefInfos={prefInfos}/>
           </div>
         </div>
       </div>
