@@ -45,10 +45,9 @@ const HomePage = () => {
         });
 
         setPrefInfos(prefInfos)
+        setIsLoading(false);
       })
     }
-
-    setIsLoading(false);
   },[prefCodes])
 
   useMemo(async () => {
@@ -86,10 +85,10 @@ const HomePage = () => {
 
   return (
     <main>
-      <div className={`overlay ${isLoading ? "": "hidden"}`}>
+      <div className={`overlay ${isLoading ? '': 'hidden'}`}>
         <div className='spinner' />
       </div>
-      <h1 style={{ background:"#7a7a7a", textAlign:"center", margin: 0}}>日本府県人口</h1>
+      <h1 style={{ background:'#7a7a7a', textAlign:'center', margin: 0, fontWeight: 'normal'}}>日本府県人口</h1>
       <div className='container'>
         <div className='content'>
           <fieldset className='fieldset'>

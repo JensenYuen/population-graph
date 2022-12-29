@@ -5,7 +5,6 @@ import { graphData } from "../pages/HomePage";
 
 interface props {
   prefInfos: graphData[]
-  className?: string
 }
 
 const Graph = ({ prefInfos }: props) => {
