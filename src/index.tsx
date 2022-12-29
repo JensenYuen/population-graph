@@ -8,6 +8,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />
+  },
+  {
+    path: "/population_graph",
+    element: <HomePage />
   }
 ])
 
