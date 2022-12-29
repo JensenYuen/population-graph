@@ -1,7 +1,7 @@
 {
-  "name": "population_graph",
+  "name": "population-graph",
   "version": "0.1.0",
-  "homepage": "https://jensenyuen.github.io/population_graph/",
+  "homepage": "https://jensenyuen.github.io/population-graph/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",

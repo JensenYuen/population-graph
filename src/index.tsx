@@ -10,7 +10,7 @@ const router = createBrowserRouter([
     element: <HomePage />
   },
   {
-    path: "/population_graph",
+    path: "/population-graph",
     element: <HomePage />
   }
 ])
